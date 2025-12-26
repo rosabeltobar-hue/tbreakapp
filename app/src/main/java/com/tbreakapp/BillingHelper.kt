@@ -62,13 +62,14 @@ class BillingHelper(private val context: Context) {
     /**
      * Check if user has purchased premium
      */
-    suspend fun isPremiumUser(): Boolean = withContext(Dispatchers.IO) {
+    suspend fun isPremiumUser(): Boolean = withContext(Dispatchers.Main) {
         val client = billingClient ?: return@withContext false
         
         val params = QueryPurchasesParams.newBuilder()
             .setProductType(BillingClient.ProductType.INAPP)
             .build()
         
+        // queryPurchasesAsync returns result synchronously in billing library 6.1.0
         val purchasesResult = client.queryPurchasesAsync(params)
         
         if (purchasesResult.billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
@@ -127,9 +128,8 @@ class BillingHelper(private val context: Context) {
             .setProductList(productList)
             .build()
         
-        val productDetailsResult = withContext(Dispatchers.IO) {
-            client.queryProductDetails(params)
-        }
+        // queryProductDetails is called on Main dispatcher as per billing library docs
+        val productDetailsResult = client.queryProductDetails(params)
         
         if (productDetailsResult.billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
             val productDetails = productDetailsResult.productDetailsList?.firstOrNull()

@@ -21,6 +21,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var billingHelper: BillingHelper
     private var isPremiumUser = false
     
+    // Cache UI references
+    private lateinit var btnRemoveAds: MaterialButton
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -34,6 +37,9 @@ class MainActivity : AppCompatActivity() {
     
     private fun setupUI() {
         setSupportActionBar(findViewById(R.id.toolbar))
+        
+        // Cache button reference
+        btnRemoveAds = findViewById(R.id.btn_remove_ads)
         
         // Start Break button
         findViewById<MaterialButton>(R.id.btn_start_break).setOnClickListener {
@@ -57,8 +63,8 @@ class MainActivity : AppCompatActivity() {
             makeDonation("donation_large")
         }
         
-        // Remove Ads button
-        findViewById<MaterialButton>(R.id.btn_remove_ads).setOnClickListener {
+        // Remove Ads button (use cached reference)
+        btnRemoveAds.setOnClickListener {
             purchasePremium()
         }
     }
@@ -105,8 +111,8 @@ class MainActivity : AppCompatActivity() {
     
     private fun updateUIForPremium() {
         if (isPremiumUser) {
-            findViewById<MaterialButton>(R.id.btn_remove_ads)?.text = "Premium Active ✓"
-            findViewById<MaterialButton>(R.id.btn_remove_ads)?.isEnabled = false
+            btnRemoveAds.text = "Premium Active ✓"
+            btnRemoveAds.isEnabled = false
         }
     }
     
