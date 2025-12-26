@@ -61,6 +61,7 @@ class BillingHelper(private val context: Context) {
     
     /**
      * Check if user has purchased premium
+     * Note: In Billing Library 6.x, queryPurchasesAsync is a suspending function
      */
     suspend fun isPremiumUser(): Boolean = withContext(Dispatchers.Main) {
         val client = billingClient ?: return@withContext false
@@ -69,7 +70,7 @@ class BillingHelper(private val context: Context) {
             .setProductType(BillingClient.ProductType.INAPP)
             .build()
         
-        // queryPurchasesAsync returns result synchronously in billing library 6.1.0
+        // queryPurchasesAsync is a suspending function in billing library 6.1.0
         val purchasesResult = client.queryPurchasesAsync(params)
         
         if (purchasesResult.billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
@@ -128,7 +129,8 @@ class BillingHelper(private val context: Context) {
             .setProductList(productList)
             .build()
         
-        // queryProductDetails is called on Main dispatcher as per billing library docs
+        // Query product details - this is a suspending function
+        // It's safe to call on Main dispatcher as it's non-blocking
         val productDetailsResult = client.queryProductDetails(params)
         
         if (productDetailsResult.billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
@@ -148,6 +150,9 @@ class BillingHelper(private val context: Context) {
                 val billingResult = client.launchBillingFlow(activity, billingFlowParams)
                 
                 if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                    // Billing flow launched successfully. Purchase result will be delivered
+                    // to PurchasesUpdatedListener. For simplicity, we indicate success here
+                    // to mean "user can now complete the purchase in the dialog"
                     callback(true, null)
                 } else {
                     callback(false, "Failed to launch billing flow: ${billingResult.debugMessage}")
