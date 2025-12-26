@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Name -->
+    <string name="app_name">TBreak App</string>
+    
+    <!-- Welcome Section -->
+    <string name="welcome_title">Welcome to TBreak</string>
+    <string name="welcome_message">Take healthy breaks from cannabis use with our tracking and support tools. Start your break journey today!</string>
+    <string name="start_break">Start Break Session</string>
+    
+    <!-- Premium Section -->
+    <string name="premium_title">Go Premium 🌟</string>
+    <string name="premium_description">Remove ads and unlock advanced break tracking features. Support the app and enhance your experience!</string>
+    <string name="remove_ads">Remove Ads - $2.99</string>
+    
+    <!-- Donation Section -->
+    <string name="support_us">Support TBreak App</string>
+    <string name="donation_description">TBreak is free and open. Your donations help keep it that way and support continued development!</string>
+    <string name="donation_small">Small Coffee ☕</string>
+    <string name="donation_medium">Meal Support 🍔</string>
+    <string name="donation_large">Generous Supporter 💚</string>
+    <string name="price_small">$0.99</string>
+    <string name="price_medium">$2.99</string>
+    <string name="price_large">$4.99</string>
+    
+    <!-- Menu Items -->
+    <string name="donate">Donate</string>
+    <string name="about">About</string>
+</resources>
